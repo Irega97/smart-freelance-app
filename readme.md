@@ -19,7 +19,7 @@ cd smart-freelance-app
 npm install
 ```
 
-3. Serve the app to see it in your browser:
+3. Serve the app in http://localhost:8100/ :
 
 ```bash
 ionic serve
