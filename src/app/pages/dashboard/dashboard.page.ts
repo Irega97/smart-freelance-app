@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AppPage } from 'src/app/models/app-page.model';
+import { GlobalDataService } from 'src/app/services/global-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardPage implements OnInit {
 
-  public appPages = [
+  public appPages: AppPage[] = [
     { title: 'Home', url: 'home', icon: 'mail' },
     { title: 'Tasks', url: 'tasks', icon: 'paper-plane' },
     { title: 'Profile', url: 'profile', icon: 'heart' },
@@ -16,14 +18,17 @@ export class DashboardPage implements OnInit {
     // { title: 'Spam', url: '/folder/spam', icon: 'warning' },
   ];
 
-  public configOpts = [
+  public configOpts: AppPage[] = [
     { title: 'Settings', url: 'settings', icon: 'mail' },
     { title: 'Log out', url: 'logout', icon: 'mail' }
   ];
 
-  constructor() {}
+  connectedAddress: any;
+  
+  constructor(private globalDataService: GlobalDataService) {}
   
   ngOnInit(): void {
+    this.connectedAddress = this.globalDataService.connectedAddress;
   }
 
 }

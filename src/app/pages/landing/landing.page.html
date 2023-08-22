@@ -1,6 +1,9 @@
 <ion-app>
-  <h1>LANDING PAGE</h1>
-  <ion-button color="primary" routerLink="/dashboard/home">
-    Go to dashboard
-  </ion-button>
+  <ion-content>
+    <h1>LANDING PAGE</h1>
+    <ion-button color="primary" expand="full" (click)="connectMetaMask()">Connect MetaMask</ion-button>
+    <h2>Address: {{connectedAddress}}</h2>
+    <h2>Connected chain: {{connectedChainId}}</h2>
+    <h2>Balance: {{balance}}</h2>
+  </ion-content>
 </ion-app>

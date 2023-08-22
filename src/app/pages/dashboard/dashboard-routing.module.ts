@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardPage } from './dashboard.page';
+import { AuthGuard } from 'src/app/shared/guards/auth-guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardPage,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'home',
@@ -14,11 +16,11 @@ const routes: Routes = [
       },
       {
         path: 'tasks',
-        loadChildren: () => import('./sections/home/home.module').then(m => m.HomePageModule)
+        loadChildren: () => import('./sections/tasks/tasks.module').then( m => m.TasksPageModule)
       },
       {
         path: 'profile',
-        loadChildren: () => import('./sections/home/home.module').then(m => m.HomePageModule)
+        loadChildren: () => import('./sections/profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
         path: 'settings',
