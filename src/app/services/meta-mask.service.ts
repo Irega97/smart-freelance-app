@@ -43,19 +43,19 @@ export class MetaMaskService {
       await window.ethereum.enable();
 
       const address = await this.getSelectedAddress();
+      console.log(address);
       
       // Set global variables
-      this.globalDataService.connectedAddress$.next(address);
-      this.globalDataService.connectedBalance$.next(await this.getBalance(address));
-      this.globalDataService.connectedChainId$.next(await this.getChainId());
-
+      this.globalDataService.setConnectedAddress(address);
+      this.globalDataService.setConnectedBalance(await this.getBalance(address));
+      this.globalDataService.setChainId(await this.getChainId());
     } catch (error) {
-      throw new Error('Error connecting to MetaMask');
+      throw new Error('Error connecting to MetaMask'+ error);
     }
   }
 
   isConnected(): Boolean {
-    if(this.web3 !== undefined && this.globalDataService.connectedAddress != null) {
+    if(this.web3 !== undefined && this.globalDataService.getConnectedAddress != null) {
       return true;
     } else {
       return false;
@@ -68,22 +68,21 @@ export class MetaMaskService {
       window.ethereum.on('accountsChanged', async (accounts: string[]) => {
         if (accounts.length === 0) {
           // Handle disconnected account
-          this.globalDataService.connectedAddress$.next(null);
-          this.globalDataService.connectedBalance$.next(null);
+          this.globalDataService.setConnectedAddress(null);
         } else {
           // Handle account change
           const newAddress = accounts[0];
-          this.globalDataService.connectedAddress$.next(newAddress);
+          this.globalDataService.setConnectedAddress(newAddress);
 
           // Fetch and set the balance for the new address
           const balance = await this.getBalance(newAddress);
-          this.globalDataService.connectedBalance$.next(balance);
+          this.globalDataService.setConnectedBalance(balance);
         }
       });
   
       window.ethereum.on('chainChanged', (chainId: string) => {
         // Handle network change
-        this.globalDataService.connectedBalance$.next(chainId);
+        this.globalDataService.setChainId(chainId);
       });
     }
   }

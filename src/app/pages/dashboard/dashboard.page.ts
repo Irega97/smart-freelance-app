@@ -28,7 +28,9 @@ export class DashboardPage implements OnInit {
   constructor(private globalDataService: GlobalDataService) {}
   
   ngOnInit(): void {
-    this.connectedAddress = this.globalDataService.connectedAddress;
+    this.globalDataService.getConnectedAddress().then(data => {
+      this.connectedAddress = data;
+    });
   }
 
 }

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: LandingPage
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register-form/register-form.module').then(m => m.RegisterFormPageModule)
   }
 ];
 

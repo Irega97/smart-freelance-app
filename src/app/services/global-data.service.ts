@@ -1,23 +1,36 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalDataService {
 
-  connectedAddress$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  get connectedAddress(): string | null {
-    return this.connectedAddress$.getValue();
+  constructor(private storage: Storage) {
+    this.storage.create();
   }
 
-  connectedBalance$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  get connectedBalance(): string | null {
-    return this.connectedBalance$.getValue();
+  setConnectedAddress(address: string | null) {
+    this.storage.set('wallet', address);
   }
 
-  connectedChainId$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  get connectedChainId(): string | null {
-    return this.connectedChainId$.getValue();
+  getConnectedAddress(): Promise<string> {
+    return this.storage.get('wallet');
+  }
+
+  setConnectedBalance(balance: string | null) {
+    this.storage.set('balance', balance);
+  }
+
+  getConnectedBalance(): Promise<string> {
+    return this.storage.get('balance');
+  }
+
+  setChainId(chainId: string | null) {
+    this.storage.set('chainId', chainId);
+  }
+
+  getChainId(): Promise<string> {
+    return this.storage.get('chainId');
   }
 }
