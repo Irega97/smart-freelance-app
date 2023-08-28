@@ -20,7 +20,7 @@ export class UserService {
     return this.http.post<JSON>(this.ruta + "new", body);
   }
 
-  getUser(walletAddress: string | null): Observable<any>{
+  getUserByWallet(walletAddress: string | null): Observable<any>{
     return this.http.get<JSON>(this.ruta + walletAddress);
   }
 }

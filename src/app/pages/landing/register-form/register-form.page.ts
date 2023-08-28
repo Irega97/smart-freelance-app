@@ -5,7 +5,7 @@ import { GlobalDataService } from 'src/app/services/global-data.service';
 import { Validator } from 'src/app/shared/validator';
 import { Components} from 'src/app/shared/components';
 import { UserService } from 'src/app/services/web-services/user.service';
-import { User } from 'src/app/models/user';
+import { User, newUser } from 'src/app/models/user';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class RegisterFormPage implements OnInit {
       //image: ['', Validators.nullValidator],
       email: ['', [Validators.email, Validator.validEmail]],
       checkemail: []
-    }/* , { validator: Validator.checkPassword  }*/);
+    });
   }
 
   ionViewWillEnter(){
@@ -52,17 +52,14 @@ export class RegisterFormPage implements OnInit {
 
     this.components.presentLoading("Conectando...").then(async () => {
       let fullName = this.registerform.value.nombre + " " + this.registerform.value.apellidos;
-      let user: User = {
-        _id: '',
-        name : this.registerform.value.nombre,
-        fullName: fullName,
-        username: this.registerform.value.username,
-        email: this.registerform.value.email,
-        image: '',
-        walletAddress: await this.globalDataService.getConnectedAddress(),
-        createdTasks: [],
-        purchasedTasks: []
-      }
+      const address = await this.globalDataService.getConnectedAddress();
+      let user: User = newUser(
+        address, 
+        this.registerform.value.username,
+        this.registerform.value.nombre,
+        fullName,
+        this.registerform.value.email
+      );
 
       this.userService.createUser(user).subscribe((data: any) => {
         // this.authservicio.addToken(jwt.token);
@@ -71,7 +68,7 @@ export class RegisterFormPage implements OnInit {
         // })
         console.log(data);
         this.components.dismissLoading()
-        this.router.navigate(['/dashboard/home']);
+        this.router.navigate(['/dashboard/home'], { state: {user: data} });
       }, error => {
         this.components.dismissLoading()
         if (error.status == 409){

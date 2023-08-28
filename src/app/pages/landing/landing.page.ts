@@ -42,14 +42,14 @@ export class LandingPage implements OnInit {
   }
 
   async handleRedirection(address: string) {
-    this.userService.getUser(address).subscribe((data: any) => {
+    this.userService.getUserByWallet(address).subscribe((data: any) => {
       var redirect;
       if(data.length == 0) {
         this.router.navigate(['/landing/register']);
         redirect = 'register';
       } else {
         //User already exists
-        this.router.navigate(['/dashboard/home']);
+        this.router.navigate(['/dashboard/home'], { state: { user: data[0] }});
         redirect = 'dashboard';
       }
       console.log(data.length + 'users found for the wallet address. Redirecting to '+redirect);
